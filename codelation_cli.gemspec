@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "codelation/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "codelation"
+  spec.name          = "codelation-cli"
   spec.version       = Codelation::VERSION
   spec.authors       = ["Brian Pattison"]
   spec.email         = ["brian@brianpattison.com"]
