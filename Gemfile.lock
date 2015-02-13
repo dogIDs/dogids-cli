@@ -1,0 +1,22 @@
+PATH
+  remote: .
+  specs:
+    codelation (0.0.1)
+      open_uri_redirections
+      progressbar
+      rubyzip
+      thor (~> 0.19)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    open_uri_redirections (0.2.1)
+    progressbar (0.21.0)
+    rubyzip (1.1.7)
+    thor (0.19.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  codelation!

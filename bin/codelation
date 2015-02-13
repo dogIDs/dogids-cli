@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require "thor"
+require_relative "../lib/codelation"
+
+module Codelation
+  class Cli < Thor
+    include Thor::Actions
+    # Add the ablitity to run commands like:
+    #   `heroku config:set`
+    # This would run the defined method:
+    #   `config_set`
+    def method_missing(method, *args, &block)
+      if method.to_s.split(":").length >= 2
+        self.send(method.to_s.gsub(":", "_"), *args)
+      elsif method == :run
+        self.walk(*args)
+      else
+        super
+      end
+    end
+
+    # This is the directory where your templates should be placed.
+    def self.source_root
+      File.expand_path("../../resources", __FILE__)
+    end
+  end
+end
+
+Codelation::Cli.start(ARGV)
