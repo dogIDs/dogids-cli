@@ -1,7 +1,3 @@
-require "open-uri"
-require "open_uri_redirections"
-require "progressbar"
-require_relative "../progress_bar"
 require "thor"
 
 module Codelation
@@ -22,6 +18,9 @@ module Codelation
 
       print_heading("Installing RVM")
       install_rvm
+
+      print_heading("Installing Sequel Pro.app")
+      install_sequel_pro
     end
   end
 end
