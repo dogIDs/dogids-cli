@@ -32,11 +32,11 @@ module Codelation
       write_downloaded_file(@download_uri)
     end
 
-    # Save the file downloaded with #download_file to resources/temp.
+    # Save the file downloaded with #download_file to ~/.codelation/temp.
     # @param uri [URI] The URI of the file to be saved
     def write_downloaded_file(uri)
       file_name = File.basename(uri.path)
-      @downloaded_file_path = File.join(Cli.source_root, "temp", file_name)
+      @downloaded_file_path = File.join("~/.codelation", "temp", file_name)
       open(@downloaded_file_path, "wb") do |file|
         file.write(@download_uri.read)
       end
