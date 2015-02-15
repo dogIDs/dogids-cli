@@ -35,6 +35,9 @@ module Codelation
     # Save the file downloaded with #download_file to ~/.codelation/temp.
     # @param uri [URI] The URI of the file to be saved
     def write_downloaded_file(uri)
+      # Create the directory ~/.codelation/temp if it doesn't exist
+      FileUtils.mkdir_p("~/.codelation/temp")
+
       file_name = File.basename(uri.path)
       @downloaded_file_path = File.join("~/.codelation", "temp", file_name)
       open(@downloaded_file_path, "wb") do |file|
