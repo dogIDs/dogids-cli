@@ -1,8 +1,10 @@
+require "fileutils"
 require "open-uri"
 require "open_uri_redirections"
 require "progressbar"
 require_relative "../../progress_bar"
 require "thor"
+require "zip"
 
 module Codelation
   class Cli < Thor
@@ -50,10 +52,15 @@ module Codelation
       # Delete existing app
       FileUtils.rm_rf("/Applications/#{app_name}") if Dir.exist?("/Applications/#{app_name}")
 
-      # Unzip temporary file to /Applications
-      `unzip #{zip_file_path} -d /Applications`
+      # Extract app from zip file to /Applications
+      extract_from_zip("/Applications", zip_file_path)
+    end
 
-      # Delete zip file
+    # Extract files from a zip file to the specified path and delete the zip file.
+    # @param unzip_path [String] The full path to unzip the files to
+    # @param zip_file_path [String] The full path to the zip file containing the app
+    def extract_from_zip(unzip_path, zip_file_path)
+      `unzip -o #{zip_file_path} -d #{unzip_path}`
       File.delete(zip_file_path)
     end
   end

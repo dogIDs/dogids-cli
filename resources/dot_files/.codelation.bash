@@ -12,10 +12,13 @@ alias sshdogids="ssh -R 52698:localhost:52698 -p 22711 root@dogids.com"
 # Add Postgres commands from Postgres.app
 PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin
 
+# Add Ruby binary to PATH first, overriding the system Ruby
+PATH=~/.codelation/ruby/bin:$PATH
+
 # Git Completion & Repo State
 # http://neverstopbuilding.com/gitpro
-source ~/.git-completion.bash
-source ~/.git-prompt.sh
+source ~/.codelation/bash/.git-completion.bash
+source ~/.codelation/bash/.git-prompt.sh
 
 MAGENTA="\[\033[0;35m\]"
 YELLOW="\[\033[0;33m\]"

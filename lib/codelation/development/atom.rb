@@ -1,7 +1,3 @@
-require "open-uri"
-require "open_uri_redirections"
-require "progressbar"
-require_relative "../../progress_bar"
 require "thor"
 
 module Codelation
