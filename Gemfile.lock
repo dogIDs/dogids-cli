@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    codelation-cli (0.0.1)
+    codelation-cli (0.0.2)
       open_uri_redirections (~> 0.2)
       progressbar (~> 0.21)
       rubyzip (~> 1.1)
