@@ -14,7 +14,7 @@ module Codelation
       return if `~/.codelation/ruby/bin/ruby -v`.include?(RUBY_VERSION)
 
       # Create the directory ~/.codelation/temp if it doesn't exist
-      FileUtils.mkdir_p("~/.codelation/temp")
+      FileUtils.mkdir_p(File.expand_path("~/.codelation/temp"))
 
       print_command("Installing ruby-install")
       install_ruby_install
@@ -37,11 +37,11 @@ module Codelation
 
     # Install ruby-install from https://github.com/postmodern/ruby-install.
     def install_ruby_install
-      @downloaded_file_path = File.join("~/.codelation", "temp", "ruby-install.tar.gz")
+      @downloaded_file_path = File.expand_path(File.join("~/.codelation", "temp", "ruby-install.tar.gz"))
       `curl -L -o #{@downloaded_file_path} #{RUBY_INSTALL_URL}`
-      `tar -xzvf #{@downloaded_file_path} -C #{File.join("~/.codelation", "temp")}`
+      `tar -xzvf #{@downloaded_file_path} -C #{File.expand_path(File.join("~/.codelation", "temp"))}`
 
-      @extracted_path = File.join("~/.codelation", "temp", "ruby-install-#{RUBY_INSTALL_VERSION}")
+      @extracted_path = File.expand_path(File.join("~/.codelation", "temp", "ruby-install-#{RUBY_INSTALL_VERSION}"))
       `cd #{@extracted_path} && sudo make install`
     end
 

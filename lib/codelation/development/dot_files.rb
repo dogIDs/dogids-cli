@@ -7,7 +7,7 @@ module Codelation
     # Install dot files and load them into ~/.bash_profile
     def install_dot_files
       # Create the directory ~/.codelation/bash if it doesn't exist
-      FileUtils.mkdir_p("~/.codelation/bash")
+      FileUtils.mkdir_p(File.expand_path("~/.codelation/bash"))
 
       # Copy dot files to ~/.codelation
       copy_file "dot_files/.codelation.bash",     "~/.codelation/bash/.codelation.bash"
