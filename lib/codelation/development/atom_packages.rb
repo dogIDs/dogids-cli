@@ -25,6 +25,7 @@ module Codelation
         linter-erb
         linter-jshint
         linter-php
+        linter-rubocop
         linter-ruby
         linter-scss-lint
         remote-atom
