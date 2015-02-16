@@ -22,7 +22,7 @@ module Codelation
       print_command("Installing Ruby #{RUBY_VERSION} to ~/.codelation/ruby")
       `ruby-install -i ~/.codelation/ruby ruby #{RUBY_VERSION}`
 
-      print_command("Installing Ruby gems")
+      print_heading("Installing Ruby Gems")
       install_gems
 
       ruby_install_cleanup
