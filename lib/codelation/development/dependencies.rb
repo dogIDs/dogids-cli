@@ -6,8 +6,12 @@ module Codelation
 
     # Install dependencies for building and installing everything else.
     def install_dependencies
-      print_command("Installing Homebrew from http://brew.sh")
-      `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+      unless `which brew`.length > 1
+        print_command("Installing Homebrew from http://brew.sh")
+        print_command("Re-run `codelation developer:install after Homebrew has been installed`")
+        sleep 3
+        exec('ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"')
+      end
 
       run_command("brew install bash")
       run_command("brew install git")
