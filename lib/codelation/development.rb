@@ -21,9 +21,6 @@ module Codelation
 
       print_heading("Installing Sequel Pro.app")
       install_sequel_pro
-
-      print_heading("Installing Codelation CLI to PATH")
-      install_codelation_cli
     end
   end
 end
