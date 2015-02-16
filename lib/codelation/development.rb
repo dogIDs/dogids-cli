@@ -24,6 +24,8 @@ module Codelation
 
       print_heading("Installing Sequel Pro.app")
       install_sequel_pro
+
+      `source ~/.bash_profile`
     end
   end
 end
