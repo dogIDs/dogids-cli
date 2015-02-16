@@ -3,7 +3,7 @@ require "open-uri"
 require "thor"
 
 module Codelation
-  VERSION = "0.0.5"
+  VERSION = "0.0.6"
 
   class Cli < Thor
     desc "update", "Update codelation-cli to latest version"

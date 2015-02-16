@@ -1,3 +1,4 @@
+require "fileutils"
 require "thor"
 
 module Codelation
@@ -18,6 +19,7 @@ module Codelation
       copy_file "dot_files/.scss-lint.yml",       "~/.scss-lint.yml"
 
       # Add `source ~/.codelation.bash` to ~/.bash_profile if it doesn't exist
+      FileUtils.touch(File.expand_path("~/.bash_profile"))
       append_to_file "~/.bash_profile", "source ~/.codelation/bash/.codelation.bash"
     end
   end
