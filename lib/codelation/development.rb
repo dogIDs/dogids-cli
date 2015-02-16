@@ -4,6 +4,9 @@ module Codelation
   class Cli < Thor
     desc "development:install", "Install the development tools used by Codelation"
     def development_install
+      print_heading("Installing Dependencies")
+      install_dependencies
+
       print_heading("Installing Atom.app")
       install_atom
 
