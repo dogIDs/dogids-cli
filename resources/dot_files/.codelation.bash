@@ -3,10 +3,10 @@ alias desktop="cd ~/Desktop"
 alias downloads="cd ~/Downloads"
 alias fixopenwith="/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain local -domain user"
 alias gg="git status -s"
-alias gitclean="git branch --merged | grep -v "\*" | xargs -n 1 git branch -d"
+alias gitclean='git branch --merged | grep -v "\*" | xargs -n 1 git branch -d'
 alias ll="ls -lah"
 alias railsclean="RAILS_ENV=development rake assets:clean; RAILS_ENV=development rake tmp:clear; RAILS_ENV=test rake assets:clean; RAILS_ENV=test rake tmp:clear"
-alias ss="rake start"
+alias ss="bundle exec rake start"
 alias sshdogids="ssh -R 52698:localhost:52698 -p 22711 root@dogids.com"
 
 # Add Postgres commands from Postgres.app
