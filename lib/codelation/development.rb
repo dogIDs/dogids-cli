@@ -3,6 +3,16 @@ require "thor"
 module Codelation
   class Cli < Thor
     desc "development:install", "Install the development tools used by Codelation"
+    long_desc <<-LONGDESC
+      Installs the following development tools:\r\n
+      - Atom.app (https://atom.io)\n
+      - Atom Packages: erb-snippets, linter, linter-csslint, linter-erb, linter-jshint,
+          linter-php, linter-rubocop, linter-ruby, linter-scss-lint, remote-atom\n
+      - Postgres.app (http://postgresapp.com)\n
+      - Ruby (https://www.ruby-lang.org)\n
+      - Ruby Gems: bundler, rubocop, scss-lint\n
+      - Sequel Pro.app (http://www.sequelpro.com)
+    LONGDESC
     def development_install
       print_heading("Installing Dependencies")
       install_dependencies
