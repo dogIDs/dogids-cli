@@ -5,7 +5,7 @@ module Codelation
   class Cli < Thor
     RUBY_INSTALL_VERSION = "0.5.0"
     RUBY_INSTALL_URL = "https://github.com/postmodern/ruby-install/archive/v#{RUBY_INSTALL_VERSION}.tar.gz"
-    RUBY_VERSION = "2.2.0"
+    RUBY_VERSION = "2.2.1"
 
   private
 
