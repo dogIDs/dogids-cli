@@ -35,7 +35,7 @@ module Codelation
 
     # This is the directory where your templates should be placed.
     def self.source_root
-      File.expand_path("../../resources", __FILE__)
+      File.expand_path("../../../resources", __FILE__)
     end
 
   private

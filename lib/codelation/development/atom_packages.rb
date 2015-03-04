@@ -27,6 +27,7 @@ module Codelation
         linter-rubocop
         linter-ruby
         linter-scss-lint
+        linter-shellcheck
         remote-atom
       )
       packages.each do |package|
