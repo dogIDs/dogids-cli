@@ -2,11 +2,11 @@ require "json"
 require "net/http"
 require "thor"
 
-module Codelation
+module Dogids
   class Cli < Thor
     include Thor::Actions
     # Add the ablitity to print help for commands like:
-    #   `codelation help development:install`
+    #   `dogids help development:install`
     # This would print help for the method:
     #   `development_install`
     # @param method [String]
@@ -20,7 +20,7 @@ module Codelation
     end
 
     # Add the ablitity to run commands like:
-    #   `codelation development:install`
+    #   `dogids development:install`
     # This would run the defined method:
     #   `development_install`
     def method_missing(method, *args, &block)

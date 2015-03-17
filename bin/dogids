@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require "thor"
+require_relative "../lib/dogids"
+
+module Dogids
+  class Cli < Thor
+  end
+end
+
+Dogids::Cli.start(ARGV)
