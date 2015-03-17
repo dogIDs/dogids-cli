@@ -4,8 +4,6 @@ Command line tool for DogIDs tasks.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
 ```bash
 $ gem install dogids-cli
 ```
