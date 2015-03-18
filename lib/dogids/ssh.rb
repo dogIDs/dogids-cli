@@ -10,9 +10,7 @@ module Dogids
         ssh_development(vm_name)
       else
         puts "Development SSH Commands:"
-        puts "  dogids ssh db                # SSH into local MySQL/Redis VM"
-        puts "  dogids ssh web               # SSH into local Apache/PHP VM"
-        puts "  dogids ssh worker            # SSH into local Ruby/Sidekiq VM"
+        puts "  dogids ssh dev               # SSH into local development VM"
         puts " "
         puts "Production SSH Commands:"
         puts "  dogids ssh:production db     # SSH into production MySQL/Redis VM"
