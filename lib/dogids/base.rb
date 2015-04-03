@@ -49,7 +49,7 @@ module Dogids
     # Print a message to the terminal about a command that's going to run.
     # @param command [String]
     def print_command(command)
-      puts "       #{command}"
+      print_wrapped(command, indent: 7)
     end
 
     # Run a command with Bash after first printing the command to the terminal.
