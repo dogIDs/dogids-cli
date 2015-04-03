@@ -14,10 +14,11 @@ $ gem install dogids-cli
 $ dogids help
 
 Commands:
-  dogids help [COMMAND] # Describe available commands or one specific command
-  dogids ssh            # List available SSH commands
-  dogids update         # Update dogids-cli to latest version
-  dogids version        # Show version information
+  dogids deploy          # List available deployment commands
+  dogids help [COMMAND]  # Describe available commands or one specific command
+  dogids ssh             # List available SSH commands
+  dogids update          # Update dogids-cli to latest version
+  dogids version         # Show version information
 ```
 
 ## Contributing
