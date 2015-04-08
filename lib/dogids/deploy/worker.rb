@@ -8,10 +8,13 @@ module Dogids
         print_heading("Deploying dogids-backgrounder...")
 
         Net::SSH.start("worker1.dogids.codelation.net", "dogids") do |ssh|
-          commands = []
-          commands << "cd apps/dogids-backgrounder"
-          commands << "git pull origin master"
-          ssh.exec!(commands.join("&& ")) do |_channel, _stream, data|
+          print_command("Pulling latest from master...")
+          ssh.exec!(worker_git_pull_command) do |_channel, _stream, data|
+            print_command(data)
+          end
+
+          print_heading("Running bundle install...")
+          ssh.exec!(worker_bundle_install_command) do |_channel, _stream, data|
             print_command(data)
           end
 
@@ -25,6 +28,22 @@ module Dogids
 
         print_heading("Done.")
       end
+    end
+
+  private
+
+    def worker_git_pull_command
+      commands = []
+      commands << "cd /home/dogids/apps/dogids-backgrounder"
+      commands << "git pull origin master"
+      commands.join("&& ")
+    end
+
+    def worker_bundle_install_command
+      commands = []
+      commands << "cd /home/dogids/apps/dogids-backgrounder"
+      commands << "/home/dogids/ruby/bin/bundle install --deployment --without development test"
+      commands.join("&& ")
     end
   end
 end
