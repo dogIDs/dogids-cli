@@ -1,13 +1,17 @@
 require "thor"
 require_relative "ssh/development"
 require_relative "ssh/production"
+require_relative "ssh/staging"
 
 module Dogids
   class Cli < Thor
     desc "ssh", "List available SSH commands"
     def ssh(vm_name = nil)
-      if vm_name
+      case vm_name
+      when "dev"
         ssh_development(vm_name)
+      when "staging"
+        ssh_staging(vm_name)
       else
         puts "Development SSH Commands:"
         puts "  dogids ssh dev               # SSH into local development VM"
