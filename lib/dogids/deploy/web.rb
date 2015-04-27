@@ -63,7 +63,7 @@ module Dogids
 
       writable_directories.each do |directory|
         full_path = File.join(app_path, directory)
-        commands << "sudo chown dogids:www-data -R #{full_path}"
+        commands << "sudo chown www-data:www-data -R #{full_path}"
         commands << "sudo chmod 775 -R #{full_path}"
       end
 
