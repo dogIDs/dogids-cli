@@ -9,7 +9,7 @@ module Dogids
     desc "update", "Update dogids-cli to latest version"
     def update
       command = "gem install dogids-cli"
-      puts "Running #{command}..."
+      puts "Running #{command}"
       exec(command)
     end
 

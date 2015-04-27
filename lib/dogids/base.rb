@@ -49,7 +49,9 @@ module Dogids
     # Print a message to the terminal about a command that's going to run.
     # @param command [String]
     def print_command(command)
-      print_wrapped(command, indent: 7)
+      command.split("\n").each do |line|
+        print_wrapped(line, indent: 7)
+      end
     end
 
     # Run a command with Bash after first printing the command to the terminal.

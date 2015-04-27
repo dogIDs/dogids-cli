@@ -5,21 +5,22 @@ module Dogids
   class Cli < Thor
     no_commands do
       def deploy_worker
-        print_heading("Deploying dogids-backgrounder...")
+        print_heading("Deploying dogids-backgrounder")
 
         Net::SSH.start("worker1.dogids.codelation.net", "dogids") do |ssh|
-          print_command("Pulling latest from master...")
+          print_command("Pulling latest from master")
           ssh.exec!(worker_git_pull_command) do |_channel, _stream, data|
             print_command(data)
           end
 
-          print_heading("Running bundle install...")
-          ssh.exec!(worker_bundle_install_command) do |_channel, _stream, data|
+          print_heading("Building application")
+          ssh.exec!(worker_build_command) do |_channel, _stream, data|
             print_command(data)
           end
 
-          if yes?("-----> Do you want to restart Sidekiq? [no]")
-            command = "sudo restart dogids-backgrounder"
+          print_heading("Restarting")
+          %w(clock web worker).each do |process|
+            command = "sudo start dogids-#{process} && sudo restart dogids-#{process}"
             ssh.exec!(command) do |_channel, _stream, data|
               print_command(data)
             end
@@ -31,6 +32,13 @@ module Dogids
     end
 
   private
+
+    def worker_build_command
+      commands = []
+      commands << "cd /home/dogids/apps/dogids-backgrounder"
+      commands << "git archive master | docker run -v /tmp/dogids-backgrounder-cache:/tmp/cache:rw -i -a stdin -a stderr -a stdout flynn/slugbuilder - > slug.tgz"
+      commands.join("&& ")
+    end
 
     def worker_git_pull_command
       commands = []

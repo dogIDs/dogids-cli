@@ -5,10 +5,10 @@ module Dogids
   class Cli < Thor
     no_commands do
       def deploy_staging
-        print_heading("Deploying dogids.com site to staging server...")
+        print_heading("Deploying dogids.com site to staging server")
 
         Net::SSH.start("staging.dogids.com", "dogids") do |ssh|
-          print_command("Checking the current git status...")
+          print_command("Checking the current git status")
           ssh.exec!(staging_git_status_command) do |_channel, _stream, data|
             print_command(data)
           end
@@ -24,15 +24,15 @@ module Dogids
             end
           end
 
-          branch = ask("-----> What branch would you like to deploy?").strip
+          branch = ask("-----> Which branch would you like to deploy?").strip
           return print_command("Fine, be that way.") if branch.length == 0
 
-          print_command("Pulling latest from #{branch}...")
+          print_command("Pulling latest from #{branch}")
           ssh.exec!(staging_git_pull_command(branch)) do |_channel, _stream, data|
             print_command(data)
           end
 
-          print_command("Updating file permissions...")
+          print_command("Updating file permissions")
           ssh.exec!(web_update_permissions_command) do |_channel, _stream, data|
             print_command(data)
           end
