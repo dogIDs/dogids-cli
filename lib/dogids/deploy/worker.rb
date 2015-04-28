@@ -20,7 +20,13 @@ module Dogids
 
           print_heading("Restarting")
           %w(clock web worker).each do |process|
-            command = "sudo start dogids-#{process} && sudo restart dogids-#{process}"
+            # First stop each process
+            command = "sudo stop dogids-#{process}"
+            ssh.exec!(command) do |_channel, _stream, data|
+              print_command(data)
+            end
+            # Then start each process (restart doesn't work if not running)
+            command = "sudo start dogids-#{process}"
             ssh.exec!(command) do |_channel, _stream, data|
               print_command(data)
             end
@@ -44,13 +50,6 @@ module Dogids
       commands = []
       commands << "cd /home/dogids/apps/dogids-backgrounder"
       commands << "git pull origin master"
-      commands.join("&& ")
-    end
-
-    def worker_bundle_install_command
-      commands = []
-      commands << "cd /home/dogids/apps/dogids-backgrounder"
-      commands << "/home/dogids/ruby/bin/bundle install --deployment --without development test"
       commands.join("&& ")
     end
   end

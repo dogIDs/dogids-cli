@@ -35,6 +35,9 @@ module Dogids
     def web_git_pull_command
       commands = []
       commands << "cd /home/dogids/apps/dogids.com"
+      commands << "sudo chown dogids:www-data -R blog/wp-content"
+      commands << "sudo chown dogids:www-data -R resources"
+      commands << "sudo chown dogids:www-data -R templates"
       commands << "git pull origin master"
       commands.join("&& ")
     end

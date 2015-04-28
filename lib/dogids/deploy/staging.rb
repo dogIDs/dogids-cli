@@ -47,6 +47,9 @@ module Dogids
     def staging_git_pull_command(branch)
       commands = []
       commands << "cd /home/dogids/apps/dogids.com"
+      commands << "sudo chown dogids:www-data -R blog/wp-content"
+      commands << "sudo chown dogids:www-data -R resources"
+      commands << "sudo chown dogids:www-data -R templates"
       commands << "git fetch origin #{branch}"
       commands << "git checkout #{branch}"
       commands << "git pull origin #{branch}"
