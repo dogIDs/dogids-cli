@@ -9,7 +9,7 @@ module Dogids
           puts "Running: `ssh -R 52698:localhost:52698 dogids@db1.dogids.codelation.net`"
           exec("ssh -R 52698:localhost:52698 dogids@db1.dogids.codelation.net")
         when "web"
-          puts "Running: `ssh -R 52698:localhost:52698 dogids@web1.dogids.codelation.net`"
+          puts "Running: `ssh -R 52698:localhost:52698 dogids@web2.dogids.codelation.net`"
           exec("ssh -R 52698:localhost:52698 dogids@web1.dogids.codelation.net")
         when "worker"
           puts "Running: `ssh -R 52698:localhost:52698 dogids@worker1.dogids.codelation.net`"

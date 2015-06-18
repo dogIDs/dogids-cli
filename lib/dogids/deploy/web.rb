@@ -7,21 +7,29 @@ module Dogids
       def deploy_web
         print_heading("Deploying dogids.com")
 
-        Net::SSH.start("web1.dogids.codelation.net", "dogids") do |ssh|
-          print_command("Checking the current git status")
-          ssh.exec!(web_git_status_command) do |_channel, _stream, data|
-            print_command(data)
-          end
+        server_addresses = [
+          "web2.dogids.codelation.net"
+        ]
 
-          if yes?("-----> Continue with deployment? [no]")
-            print_command("Pulling latest from master")
-            ssh.exec!(web_git_pull_command) do |_channel, _stream, data|
+        server_addresses.each do |server_address|
+          print_command("Server: #{server_address}")
+
+          Net::SSH.start(server_address, "dogids") do |ssh|
+            print_command("Checking the current git status")
+            ssh.exec!(web_git_status_command) do |_channel, _stream, data|
               print_command(data)
             end
 
-            print_command("Updating file permissions")
-            ssh.exec!(web_update_permissions_command) do |_channel, _stream, data|
-              print_command(data)
+            if yes?("-----> Continue with deployment? [no]")
+              print_command("Pulling latest from master")
+              ssh.exec!(web_git_pull_command) do |_channel, _stream, data|
+                print_command(data)
+              end
+
+              print_command("Updating file permissions")
+              ssh.exec!(web_update_permissions_command) do |_channel, _stream, data|
+                print_command(data)
+              end
             end
           end
         end
@@ -35,6 +43,7 @@ module Dogids
     def web_git_pull_command
       commands = []
       commands << "cd /home/dogids/apps/dogids.com"
+      commands << "sudo chown dogids:dogids -R .git"
       commands << "sudo chown dogids:www-data -R blog/wp-content"
       commands << "sudo chown dogids:www-data -R resources"
       commands << "sudo chown dogids:www-data -R templates"
