@@ -46,8 +46,9 @@ module Dogids
 
     def clean_up_command
       commands = []
+      # Delete any SQL backups that failed to be deleted after uploading to S3
       commands << "sudo find /var/lib/docker/ -type f -name '*.sql' -delete"
-      commands << "sudo find /var/lib/docker/ -type f -name '*.log' -delete"
+      # Delete any old docker containers to free up space
       commands << "sudo docker ps -a -f status=exited -q | xargs -r sudo docker rm -v"
       commands.join(" && ")
     end
