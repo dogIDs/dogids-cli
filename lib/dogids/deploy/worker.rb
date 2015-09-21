@@ -31,6 +31,11 @@ module Dogids
               print_command(data)
             end
           end
+
+          print_heading("Cleaning up")
+          ssh.exec!(clean_up_command) do |_channel, _stream, data|
+            print_command(data)
+          end
         end
 
         print_heading("Done.")
@@ -38,6 +43,14 @@ module Dogids
     end
 
   private
+
+    def clean_up_command
+      commands = []
+      commands << "sudo find /var/lib/docker/ -type f -name '*.sql' -delete"
+      commands << "sudo find /var/lib/docker/ -type f -name '*.log' -delete"
+      commands << "sudo docker ps -a -f status=exited -q | xargs -r sudo docker rm -v"
+      commands.join(" && ")
+    end
 
     def worker_build_command
       commands = []
