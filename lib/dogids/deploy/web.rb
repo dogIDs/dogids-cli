@@ -36,10 +36,20 @@ module Dogids
         end
 
         print_heading("Done.")
+        print_cloudflare_warning
       end
     end
 
   private
+
+    def print_cloudflare_warning
+      puts ""
+      puts "================================================================================"
+      puts "               DON'T FORGET TO PURGE THE CLOUDFLARE CACHE!"
+      puts "             https://www.cloudflare.com/a/caching/dogids.com"
+      puts "================================================================================"
+      puts ""
+    end
 
     def web_git_pull_command
       commands = []
