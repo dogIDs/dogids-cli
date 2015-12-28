@@ -3,7 +3,7 @@ require "open-uri"
 require "thor"
 
 module Dogids
-  VERSION = "0.0.14"
+  VERSION = "0.0.15"
 
   class Cli < Thor
     desc "update", "Update dogids-cli to latest version"
