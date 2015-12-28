@@ -5,6 +5,9 @@ module Dogids
     no_commands do
       def ssh_production(vm_name = nil)
         case vm_name
+        when "admin"
+          puts "Running: `ssh -R 52698:localhost:52698 dogids@admin.dogids.codelation.net`"
+          exec("ssh -R 52698:localhost:52698 dogids@admin.dogids.codelation.net")
         when "db"
           puts "Running: `ssh -R 52698:localhost:52698 dogids@db1.dogids.codelation.net`"
           exec("ssh -R 52698:localhost:52698 dogids@db1.dogids.codelation.net")

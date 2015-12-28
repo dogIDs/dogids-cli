@@ -20,6 +20,7 @@ module Dogids
         puts "  dogids ssh staging           # SSH into staging Apache/PHP/MySQL VM"
         puts " "
         puts "Production SSH Commands:"
+        puts "  dogids ssh:production admin  # SSH into VM for long running admin processes"
         puts "  dogids ssh:production db     # SSH into production MySQL/Redis VM"
         puts "  dogids ssh:production web    # SSH into production Apache/PHP VM"
         puts "  dogids ssh:production worker # SSH into production Ruby/Sidekiq VM"
