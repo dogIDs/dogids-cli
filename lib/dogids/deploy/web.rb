@@ -8,7 +8,8 @@ module Dogids
         print_heading("Deploying dogids.com")
 
         server_addresses = [
-          "web2.dogids.codelation.net"
+          "web2.dogids.codelation.net",
+          "admin.dogids.codelation.net"
         ]
 
         server_addresses.each do |server_address|
