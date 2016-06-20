@@ -5,9 +5,12 @@ module Dogids
   class Cli < Thor
     no_commands do
       def deploy_worker
+        ssh_address = get_config_url("worker")
+        return if ssh_address == false
+
         print_heading("Deploying dogids-backgrounder")
 
-        Net::SSH.start("worker1.dogids.codelation.net", "dogids") do |ssh|
+        Net::SSH.start("#{ssh_address}", "dogids") do |ssh|
           print_command("Pulling latest from master")
           ssh.exec!(worker_git_pull_command) do |_channel, _stream, data|
             print_command(data)

@@ -6,8 +6,8 @@ require "dogids/version"
 Gem::Specification.new do |spec|
   spec.name          = "dogids-cli"
   spec.version       = Dogids::VERSION
-  spec.authors       = ["Brian Pattison"]
-  spec.email         = ["brian@brianpattison.com"]
+  spec.authors       = ["Jaryd Krishnan"]
+  spec.email         = ["jaryd@dogids.com"]
   spec.summary       = "Command line tool for dogIDs tasks"
   spec.homepage      = "https://github.com/dogIDs/dogids-cli"
   spec.license       = "MIT"
@@ -18,4 +18,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "net-ssh", "~> 2.9"
   spec.add_dependency "thor", "~> 0.19"
+  spec.add_dependency "user_config", "~> 0.0.4"
 end
