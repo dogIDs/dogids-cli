@@ -6,17 +6,29 @@ module Dogids
       def ssh_production(vm_name = nil)
         case vm_name
         when "admin"
-          puts "Running: `ssh -R 52698:localhost:52698 dogids@admin.dogids.codelation.net`"
-          exec("ssh -R 52698:localhost:52698 dogids@admin.dogids.codelation.net")
+          ssh_address = get_config_url(vm_name)
+          if ssh_address then
+            puts "Running: `ssh -R 52698:localhost:52698 dogids@#{ssh_address}`"
+            exec("ssh -R 52698:localhost:52698 dogids@#{ssh_address}")
+          end
         when "db"
-          puts "Running: `ssh -R 52698:localhost:52698 dogids@db1.dogids.codelation.net`"
-          exec("ssh -R 52698:localhost:52698 dogids@db1.dogids.codelation.net")
+          ssh_address = get_config_url(vm_name)
+          if ssh_address then
+            puts "Running: `ssh -R 52698:localhost:52698 dogids@#{ssh_address}`"
+            exec("ssh -R 52698:localhost:52698 dogids@#{ssh_address}")
+          end
         when "web"
-          puts "Running: `ssh -R 52698:localhost:52698 dogids@web2.dogids.codelation.net`"
-          exec("ssh -R 52698:localhost:52698 dogids@web2.dogids.codelation.net")
+          ssh_address = get_config_url(vm_name)
+          if ssh_address then
+            puts "Running: `ssh -R 52698:localhost:52698 dogids@#{ssh_address}`"
+            exec("ssh -R 52698:localhost:52698 dogids@#{ssh_address}")
+          end
         when "worker"
-          puts "Running: `ssh -R 52698:localhost:52698 dogids@worker1.dogids.codelation.net`"
-          exec("ssh -R 52698:localhost:52698 dogids@worker1.dogids.codelation.net")
+          ssh_address = get_config_url(vm_name)
+          if ssh_address then
+            puts "Running: `ssh -R 52698:localhost:52698 dogids@#{ssh_address}`"
+            exec("ssh -R 52698:localhost:52698 dogids@#{ssh_address}")
+          end
         else
           ssh
         end

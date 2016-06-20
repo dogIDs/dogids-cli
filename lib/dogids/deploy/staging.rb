@@ -6,8 +6,9 @@ module Dogids
     no_commands do
       def deploy_staging
         print_heading("Deploying dogids.com site to staging server")
+        ssh_address = get_config_url("staging")
 
-        Net::SSH.start("staging.dogids.com", "dogids") do |ssh|
+        Net::SSH.start("#{ssh_address}", "dogids") do |ssh|
           print_command("Checking the current git status")
           ssh.exec!(staging_git_status_command) do |_channel, _stream, data|
             print_command(data)

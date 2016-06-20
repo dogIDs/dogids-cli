@@ -8,14 +8,17 @@ module Dogids
         print_heading("Deploying dogids.com")
 
         server_addresses = [
-          "web2.dogids.codelation.net",
-          "admin.dogids.codelation.net"
+          "web",
+          "admin"
         ]
 
         server_addresses.each do |server_address|
-          print_command("Server: #{server_address}")
+          ssh_address = get_config_url("#{server_address}")
+          next if ssh_address == false
 
-          Net::SSH.start(server_address, "dogids") do |ssh|
+          print_command("Server(#{server_address}): #{ssh_address}")
+
+          Net::SSH.start(ssh_address, "dogids") do |ssh|
             print_command("Checking the current git status")
             ssh.exec!(web_git_status_command) do |_channel, _stream, data|
               print_command(data)

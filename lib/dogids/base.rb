@@ -1,6 +1,7 @@
 require "json"
 require "net/http"
 require "thor"
+require "user_config"
 
 module Dogids
   class Cli < Thor
@@ -40,6 +41,18 @@ module Dogids
 
   private
 
+    def get_config_url(location)
+      config_file = set_config_location
+      if config_file.key?("#{location}") then
+        return config_file["#{location}"]
+      else
+        say("URL/IP hasn't been set for #{location} \n")
+        say("Please set this first by running: \n")
+        say("dogids config #{location}","\e[32m")
+        return false
+      end
+    end
+
     # Print a heading to the terminal for commands that are going to be run.
     # @param heading [String]
     def print_heading(heading)
@@ -59,6 +72,13 @@ module Dogids
     def run_command(command)
       print_command(command)
       `#{command}`
+    end
+
+    # Access local configuration file
+    # @param file [String]
+    def set_config_location
+      config = UserConfig.new('.dogids')
+      config['conf.yaml']
     end
   end
 end
