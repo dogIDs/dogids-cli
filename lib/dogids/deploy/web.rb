@@ -9,11 +9,12 @@ module Dogids
 
         server_addresses = [
           "web",
+          "web2",
           "admin"
         ]
 
         server_addresses.each do |server_address|
-          ssh_address = get_config_url("#{server_address}")
+          ssh_address = get_config_url("production","#{server_address}")
           next if ssh_address == false
 
           print_command("Server(#{server_address}): #{ssh_address}")

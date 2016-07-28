@@ -4,17 +4,17 @@ require "thor"
 module Dogids
   class Cli < Thor
     no_commands do
-      def cache_staging(vm_name = nil)
-        ssh_address = get_config_url("staging")
+      def cache_staging(vm_name = nil, cache = nil)
+        ssh_address = get_config_url("staging",vm_name)
         return if ssh_address == false
-        case vm_name
+        case cache
         when "category"
           print_heading("Checking the category reviews cache")
           Net::SSH.start("#{ssh_address}", "dogids") do |ssh|
             ssh.exec!(count_category_cache_files_staging_command) do |_channel, _stream, data|
               print_command("Current category reviews: " + data)
             end
-            if yes?("-----> Continue with clearing the cache? [no]")
+            if yes?("-----> Continue with clearing the STAGING category item cache? [no]")
               print_heading("Clearing the staging category cache")
               ssh.exec!(clear_category_cache_staging_command) do |_channel, _stream, data|
               end
@@ -22,17 +22,17 @@ module Dogids
           end
         when "clear"
           print_heading("Let's start clearing the entire staging cache")
-          cache_staging("category")
-          cache_staging("qa")
-          cache_dev("javascript")
-          cache_dev("css")
+          cache_staging(vm_name,"category")
+          cache_staging(vm_name,"qa")
+          cache_staging(vm_name,"javascript")
+          cache_staging(vm_name,"css")
         when "css"
           print_heading("Checking the CSS cache")
           Net::SSH.start("#{ssh_address}", "dogids") do |ssh|
             ssh.exec!(count_css_cache_files_staging_command) do |_channel, _stream, data|
               print_command("Current CSS cache files: " + data)
             end
-            if yes?("-----> Continue with clearing the CSS cache? [no]")
+            if yes?("-----> Continue with clearing the STAGING CSS cache? [no]")
               print_heading("Clearing the development CSS cache")
               ssh.exec!(clear_css_cache_staging_command) do |_channel, _stream, data|
               end
@@ -44,7 +44,7 @@ module Dogids
             ssh.exec!(count_javascript_cache_files_staging_command) do |_channel, _stream, data|
               print_command("Current Javascript cache files: " + data)
             end
-            if yes?("-----> Continue with clearing the Javascript cache? [no]")
+            if yes?("-----> Continue with clearing the STAGING Javascript cache? [no]")
               print_heading("Clearing the development Javascript cache")
               ssh.exec!(clear_javascript_cache_staging_command) do |_channel, _stream, data|
               end
@@ -56,7 +56,7 @@ module Dogids
             ssh.exec!(count_qa_cache_files_staging_command) do |_channel, _stream, data|
               print_command("Current category reviews: " + data)
             end
-            if yes?("-----> Continue with clearing this cache? [no]")
+            if yes?("-----> Continue with clearing the STAGING product Q&A cache? [no]")
               print_heading("Clearing the staging QA cache")
               ssh.exec!(clear_qa_cache_staging_command) do |_channel, _stream, data|
               end

@@ -4,36 +4,36 @@ require "thor"
 module Dogids
   class Cli < Thor
     no_commands do
-      def cache_production(vm_name = nil)
-        ssh_address = get_config_url("web")
+      def cache_production(vm_name = nil, cache = nil)
+        ssh_address = get_config_url("production",vm_name)
         return if ssh_address == false
 
-        case vm_name
+        case cache
         when "category"
-          print_heading("Checking the category reviews cache")
+          print_heading("Checking the category items cache")
           Net::SSH.start("#{ssh_address}", "dogids") do |ssh|
             ssh.exec!(count_category_cache_files_production_command) do |_channel, _stream, data|
               print_command("Current category reviews: " + data)
             end
-            if yes?("-----> Continue with clearing the cache? [no]")
-              print_heading("Clearing the production category cache")
+            if yes?("-----> Continue with clearing the PRODUCTION category items cache? [no]")
+              print_heading("Clearing the production category items cache")
               ssh.exec!(clear_category_cache_production_command) do |_channel, _stream, data|
               end
             end
           end
         when "clear"
           print_heading("Let's start clearing the entire production cache")
-          cache_production("category")
-          cache_production("qa")
-          cache_dev("javascript")
-          cache_dev("css")
+          cache_production(vm_name,"category")
+          cache_production(vm_name,"qa")
+          cache_production(vm_name,"javascript")
+          cache_production(vm_name,"css")
         when "css"
           print_heading("Checking the CSS cache")
           Net::SSH.start("#{ssh_address}", "dogids") do |ssh|
             ssh.exec!(count_css_cache_files_production_command) do |_channel, _stream, data|
               print_command("Current CSS cache files: " + data)
             end
-            if yes?("-----> Continue with clearing the CSS cache? [no]")
+            if yes?("-----> Continue with clearing the PRODUCTION CSS cache? [no]")
               print_heading("Clearing the development CSS cache")
               ssh.exec!(clear_css_cache_production_command) do |_channel, _stream, data|
               end
@@ -45,7 +45,7 @@ module Dogids
             ssh.exec!(count_javascript_cache_files_production_command) do |_channel, _stream, data|
               print_command("Current Javascript cache files: " + data)
             end
-            if yes?("-----> Continue with clearing the Javascript cache? [no]")
+            if yes?("-----> Continue with clearing the PRODUCTION Javascript cache? [no]")
               print_heading("Clearing the development Javascript cache")
               ssh.exec!(clear_javascript_cache_production_command) do |_channel, _stream, data|
               end
@@ -57,8 +57,8 @@ module Dogids
             ssh.exec!(count_qa_cache_files_production_command) do |_channel, _stream, data|
               print_command("Current category reviews: " + data)
             end
-            if yes?("-----> Continue with clearing this cache? [no]")
-              print_heading("Clearing the production QA cache")
+            if yes?("-----> Continue with clearing the PRODUCTION product Q&A cache? [no]")
+              print_heading("Clearing the production product Q&A cache")
               ssh.exec!(clear_qa_cache_production_command) do |_channel, _stream, data|
               end
             end

@@ -9,51 +9,68 @@ module Dogids
       case command
       when "list"
         list
-      when "admin"
-        set_config("admin")
-      when "db"
-        set_config("db")
-      when "dev"
-        set_config("dev")
-      when "staging"
-        set_config("staging")
-      when "web"
-        set_config("web")
-      when "worker"
-        set_config("worker")
       else
         puts " "
         puts "Config Commands:"
         puts " "
+        puts " Use the following so set environments:"
+        puts " dogids config:<environment> <machine>"
+        puts " "
         puts "  dogids config list            # List all current configurations"
         puts " "
-        puts "  dogids config admin           # Set URL/IP for Admin"
-        puts "  dogids config db              # Set URL/IP for DB"
-        puts "  dogids config dev             # Set URL/IP for Dev"
-        puts "  dogids config staging         # Set URL/IP for Staging"
-        puts "  dogids config web             # Set URL/IP for Web"
-        puts "  dogids config worker          # Set URL/IP for Worker"
+        puts "  dogids config:dev             # Set URL/IP for Development Machines"
+        puts "  dogids config:production      # Set URL/IP for Production Machines"
+        puts "  dogids config:staging         # Set URL/IP for Staging machines"
         puts " "
       end
     end
 
     no_commands do
+
+      # Config dev environment
+      # @param [string] location
+      def config_dev(location = nil)
+        location ? set_config("dev",location) : config
+      end
+
+      # Config staging environment
+      # @param [string] location
+      def config_staging(location = nil)
+        location ? set_config("staging",location) : config
+      end
+
+      # Config production environment
+      # @param [string] location
+      def config_production(location = nil)
+        location ? set_config("production",location) : config
+      end
+
       def list
         dogids_config = set_config_location
         if dogids_config.any? then
-          say("The following configurations are set: \n \n")
-          print_table(dogids_config)
+          say("The following configurations are set: \n")
+          dogids_config.each do |environment, locations|
+            say("\n##### #{environment}")
+            print_table(locations)
+          end
         else
           say("No configuration values have been set. Here's the command list:")
           config
         end
       end
 
-      def set_config(location)
+      # Set configuration files based on environment and location
+      # @param [string] environment
+      # @param [string] location
+      def set_config(environment,location)
         dogids_config = set_config_location
+        environment_configuration = Hash.new
+        if dogids_config["#{environment}"]
+          environment_configuration = dogids_config["#{environment}"].to_hash
+        end
         current_value = ""
-        if dogids_config.key?("#{location}") then
-          current_value = dogids_config["#{location}"]
+        if dogids_config["#{environment}"] != nil && dogids_config["#{environment}"]["#{location}"] != nil then
+          current_value = get_config_url(environment, location)
           say("Current #{location} URL/IP: #{current_value} \n","\e[32m")
           set_new = yes?("-------> Do you want to enter a new value?[no]")
           return if set_new != true
@@ -71,7 +88,8 @@ module Dogids
           confirm = yes?("-------> Do you want to #{confirm_string}?[no]")
           return if confirm != true
         end
-        dogids_config["#{location}"] = new_value
+        environment_configuration[location] = new_value
+        dogids_config["#{environment}"] = environment_configuration
         dogids_config.save
         say("The new URL/IP for #{location}: #{new_value}","\e[32m")
       end

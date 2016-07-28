@@ -5,7 +5,7 @@ module Dogids
   class Cli < Thor
     no_commands do
       def deploy_worker
-        ssh_address = get_config_url("worker")
+        ssh_address = get_config_url("production","worker")
         return if ssh_address == false
 
         print_heading("Deploying dogids-backgrounder")

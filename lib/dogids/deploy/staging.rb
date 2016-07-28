@@ -6,41 +6,53 @@ module Dogids
     no_commands do
       def deploy_staging
         print_heading("Deploying dogids.com site to staging server")
-        ssh_address = get_config_url("staging")
 
-        Net::SSH.start("#{ssh_address}", "dogids") do |ssh|
-          print_command("Checking the current git status")
-          ssh.exec!(staging_git_status_command) do |_channel, _stream, data|
-            print_command(data)
-          end
 
-          current_branch = ssh.exec!("cd /home/dogids/apps/dogids.com && git rev-parse --abbrev-ref HEAD").strip
+        server_addresses = [
+          "staging",
+          "staging2"
+        ]
 
-          print_heading("Current Branch: #{current_branch}")
-          print_heading("Available Branches:")
-          ssh.exec!("cd /home/dogids/apps/dogids.com && git branch -r --no-merged master") do |_channel, _stream, data|
-            print_command("master")
-            data.split("\n").each do |branch|
-              print_command(branch.gsub("origin/", ""))
+        server_addresses.each do |server_address|
+
+          ssh_address = get_config_url("staging",server_address)
+          next if ssh_address == false
+
+          Net::SSH.start("#{ssh_address}", "dogids") do |ssh|
+            print_command("Checking the current git status")
+            ssh.exec!(staging_git_status_command) do |_channel, _stream, data|
+              print_command(data)
             end
-          end
 
-          branch = ask("-----> Which branch would you like to deploy?").strip
-          return print_command("Fine, be that way.") if branch.length == 0
+            current_branch = ssh.exec!("cd /home/dogids/apps/dogids.com && git rev-parse --abbrev-ref HEAD").strip
 
-          print_command("Pulling latest from #{branch}")
-          ssh.exec!(staging_git_pull_command(branch)) do |_channel, _stream, data|
-            print_command(data)
-          end
+            print_heading("Current Branch: #{current_branch}")
+            print_heading("Available Branches:")
+            ssh.exec!("cd /home/dogids/apps/dogids.com && git branch -r --no-merged master") do |_channel, _stream, data|
+              print_command("master")
+              data.split("\n").each do |branch|
+                print_command(branch.gsub("origin/", ""))
+              end
+            end
 
-          print_command("Updating file permissions")
-          ssh.exec!(web_update_permissions_command) do |_channel, _stream, data|
-            print_command(data)
+            branch = ask("-----> Which branch would you like to deploy?").strip
+            break print_command("Fine, be that way.") if branch.length == 0
+
+            print_command("Pulling latest from #{branch}")
+            ssh.exec!(staging_git_pull_command(branch)) do |_channel, _stream, data|
+              print_command(data)
+            end
+
+            print_command("Updating file permissions")
+            ssh.exec!(web_update_permissions_command) do |_channel, _stream, data|
+              print_command(data)
+            end
           end
         end
 
         print_heading("Done.")
       end
+
     end
 
   private

@@ -41,26 +41,31 @@ module Dogids
 
   private
 
-    def get_config_url(location)
+    # Get configuration for environment and location
+    # @param [string] environment
+    # @param [string] location (Optional)
+    def get_config_url(environment, location = nil)
       config_file = set_config_location
-      if config_file.key?("#{location}") then
-        return config_file["#{location}"]
+      if location
+        return config_file[environment][location] if config_file[environment].has_key?(location)
+      elsif config_file.has_key?(environment)
+        return config_file[environment]
       else
         say("URL/IP hasn't been set for #{location} \n")
         say("Please set this first by running: \n")
-        say("dogids config #{location}","\e[32m")
+        say("dogids config:#{environment} #{location}","\e[32m")
         return false
       end
     end
 
     # Print a heading to the terminal for commands that are going to be run.
-    # @param heading [String]
+    # @param [String] heading
     def print_heading(heading)
       puts "-----> #{heading}"
     end
 
     # Print a message to the terminal about a command that's going to run.
-    # @param command [String]
+    # @param [String] command
     def print_command(command)
       command.split("\n").each do |line|
         print_wrapped(line, indent: 7)
@@ -68,14 +73,13 @@ module Dogids
     end
 
     # Run a command with Bash after first printing the command to the terminal.
-    # @param command [String]
+    # @param [String] command
     def run_command(command)
       print_command(command)
       `#{command}`
     end
 
     # Access local configuration file
-    # @param file [String]
     def set_config_location
       config = UserConfig.new('.dogids')
       config['conf.yaml']
