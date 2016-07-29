@@ -1,3 +1,4 @@
+require "net/ssh"
 require "thor"
 module Dogids
   class Cli < Thor
@@ -9,6 +10,11 @@ module Dogids
     def reload(app_name = nil)
       if yes?("-----> Reload development? [no]")
         reload_development_machine
+      elsif yes?("-----> Restart LAMP stack? [no]")
+        ssh_address = get_config_url("dev","dev")
+        restart_lamp(ssh_address, "dogids")
+      elsif yes?("-----> Restart LB and LAMP stack? [no]")
+        restart_all
       else
         update_vagrant_box if yes?("-----> Update Vagrant Box? (NOT RECOMMENDED) [no]")
       end
@@ -34,6 +40,33 @@ module Dogids
         system("cd ~/dogids-vagrant && vagrant reload")
       end
 
+      # Restarts HAProxy, Apache, HHVM, and MySQL
+      def restart_all
+        dev_machines = get_config_url("dev")
+        dev_machines.each do |key,dev_machine|
+          ssh_address = get_config_url("dev",dev_machine)
+          lamp_restart_command(dev_machine, "dogids") if dev_machine == dev
+          lb_restart_command(dev_machine, "dogids") if dev_machine == lb
+        end
+      end
+
+      def restart_lamp(ssh_address,user)
+        Net::SSH.start(ssh_address, "dogids") do |ssh|
+          lamp_restart_command = "sudo service apache2 restart && sudo service hhvm restart && sudo service mysql restart"
+          ssh.exec!(lamp_restart_command) do |_channel, _stream, data|
+            print_command(data)
+          end
+        end
+      end
+
+      def restart_lb(ssh_address,user)
+        Net::SSH.start(ssh_address, "dogids") do |ssh|
+          lb_restart_command = "sudo service haproxy restart"
+          ssh.exec!(lb_restart_command) do |_channel, _stream, data|
+            print_command(data)
+          end
+        end
+      end
     end
   end
 end
