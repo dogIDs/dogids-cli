@@ -15,8 +15,10 @@ module Dogids
         restart_lamp(ssh_address, "dogids")
       elsif yes?("-----> Restart LB and LAMP stack? [no]")
         restart_all
+      elsif yes?("-----> Update Vagrant Box? (NOT RECOMMENDED) [no]")
+        update_vagrant_box
       else
-        update_vagrant_box if yes?("-----> Update Vagrant Box? (NOT RECOMMENDED) [no]")
+        say("Fine, I didn't want you to do anything anyway.")
       end
     end
 
