@@ -9,6 +9,15 @@ module Dogids
       case command
       when "list"
         list
+      when "clear"
+        system("rm ~/.dogids/conf.yaml") if yes?("------->Remove all configurations? [no]")
+        say("All configurations removed","\e[31m")
+        puts " "
+        puts "You should probably copy and paste EACH of the following:"
+        puts " "
+        puts " dogids config:dev dev 55.55.55.30"
+        puts " dogids config:dev lb 55.55.55.20"
+        puts " "
       else
         puts " "
         puts "Config Commands:"
