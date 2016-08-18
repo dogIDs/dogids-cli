@@ -10,14 +10,16 @@ module Dogids
       when "list"
         list
       when "clear"
-        system("rm ~/.dogids/conf.yaml") if yes?("------->Remove all configurations? [no]")
-        say("All configurations removed","\e[31m")
-        puts " "
-        puts "You should probably copy and paste EACH of the following:"
-        puts " "
-        puts " dogids config:dev dev 55.55.55.30"
-        puts " dogids config:dev lb 55.55.55.20"
-        puts " "
+        if yes?("------->Remove all configurations? [no]")
+          system("rm ~/.dogids/conf.yaml")
+          puts " "
+          say("All configurations removed","\e[31m")
+          set_default_configuration
+          puts " "
+          list
+        else
+          say("Fine, I didn't want to remove anything anyway","\e[31m")
+        end
       else
         puts " "
         puts "Config Commands:"
@@ -102,7 +104,13 @@ module Dogids
         dogids_config.save
         say("The new URL/IP for #{location}: #{new_value}","\e[32m")
       end
-    end
 
+      def set_default_configuration
+        dogids_config = set_config_location
+        dogids_config["dev"] = {"lb"=>"55.55.55.20","dev"=>"55.55.55.30"}
+        dogids_config.save
+      end
+
+    end
   end
 end

@@ -8,10 +8,11 @@ module Dogids
     # TODO add environments
     # @param [string] app_name
     def reload(app_name = nil)
+      ssh_address = get_config_url("dev","dev")
       if yes?("-----> Reload development? [no]")
         reload_development_machine
+        restart_lamp(ssh_address, "dogids")
       elsif yes?("-----> Restart LAMP stack? [no]")
-        ssh_address = get_config_url("dev","dev")
         restart_lamp(ssh_address, "dogids")
       elsif yes?("-----> Restart LB and LAMP stack? [no]")
         restart_all
@@ -47,8 +48,8 @@ module Dogids
         dev_machines = get_config_url("dev")
         dev_machines.each do |key,dev_machine|
           ssh_address = get_config_url("dev",dev_machine)
-          lamp_restart_command(dev_machine, "dogids") if dev_machine == dev
-          lb_restart_command(dev_machine, "dogids") if dev_machine == lb
+          restart_lamp(ssh_address, "dogids") if dev_machine == dev
+          restart_lb(ssh_address, "dogids") if dev_machine == lb
         end
       end
 
