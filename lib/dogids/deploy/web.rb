@@ -9,7 +9,6 @@ module Dogids
 
         server_addresses = [
           "web",
-          "web2",
           "admin"
         ]
 

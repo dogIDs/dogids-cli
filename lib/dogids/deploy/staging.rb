@@ -9,8 +9,7 @@ module Dogids
 
 
         server_addresses = [
-          "staging",
-          "staging2"
+          "staging"
         ]
 
         server_addresses.each do |server_address|
