@@ -8,8 +8,7 @@ module Dogids
         print_heading("Deploying dogids.com")
 
         server_addresses = [
-          "web",
-          "admin"
+          "web"
         ]
 
         server_addresses.each do |server_address|
