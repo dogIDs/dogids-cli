@@ -46,6 +46,12 @@ module Dogids
             ssh.exec!(web_update_permissions_command) do |_channel, _stream, data|
               print_command(data)
             end
+
+            git_sha = "Unknown"
+            ssh.exec!(web_git_get_sha)  do |_channel, _stream, data|
+              git_sha = data.strip
+            end
+            print_command("Current git SHA: #{git_sha}")
           end
         end
 

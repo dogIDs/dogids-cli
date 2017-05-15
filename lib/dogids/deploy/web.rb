@@ -33,6 +33,27 @@ module Dogids
               ssh.exec!(web_update_permissions_command) do |_channel, _stream, data|
                 print_command(data)
               end
+              
+              git_sha = "Unknown"
+              ssh.exec!(web_git_get_sha) do |_channel, _stream, data|
+                git_sha = data.strip
+              end
+              print_command("Current git SHA: #{git_sha}")
+              
+              print_command("Sending release to sentry")
+              ssh.exec!(web_sentry_create_release(git_sha)) do |_channel, _stream, data|
+                print_command(data)
+              end
+              ssh.exec!(web_sentry_set_commits(git_sha)) do |_channel, _stream, data|
+                print_command(data)
+              end
+              ssh.exec!(web_sentry_finalize(git_sha)) do |_channel, _stream, data|
+                print_command(data)
+              end
+              print_command("Sending deployment to sentry")
+              ssh.exec!(web_sentry_deploy(git_sha)) do |_channel, _stream, data|
+                print_command(data)
+              end
             end
           end
         end
@@ -61,6 +82,13 @@ module Dogids
       commands << "sudo chown dogids:www-data -R resources"
       commands << "sudo chown dogids:www-data -R templates"
       commands << "git pull origin master"
+      commands.join("&& ")
+    end
+    
+    def web_git_get_sha
+      commands =  []
+      commands << "cd /home/dogids/apps/dogids.com"
+      commands << "git log --pretty='%H' -n1 HEAD"
       commands.join("&& ")
     end
 
@@ -94,5 +122,35 @@ module Dogids
 
       commands.join("&& ")
     end
+    
+    ### SENTRY COMMANDS ###
+    def web_sentry_create_release(git_sha)
+      commands = []
+      commands << "cd /home/dogids/apps/dogids.com"
+      commands << "sentry-cli releases new #{git_sha}"
+      commands.join(" && ")
+    end
+    
+    def web_sentry_set_commits(git_sha)
+      commands = []
+      commands << "cd /home/dogids/apps/dogids.com"
+      commands << "sentry-cli releases set-commits #{git_sha} --auto"
+      commands.join(" && ")
+    end
+    
+    def web_sentry_finalize(git_sha)
+      commands = []
+      commands << "cd /home/dogids/apps/dogids.com"
+      commands << "sentry-cli releases finalize #{git_sha}"
+      commands.join(" && ")
+    end
+    
+    def web_sentry_deploy(git_sha)
+      commands = []
+      commands << "cd /home/dogids/apps/dogids.com"
+      commands << "sentry-cli releases deploys #{git_sha} new -e production"
+      commands.join(" && ")
+    end
+    ### END SENTRY COMMANDS ###
   end
 end
