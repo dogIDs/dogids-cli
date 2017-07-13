@@ -7,7 +7,7 @@ module Dogids
     # Run the development site
     # @param [string] app_name
     def dev(app_name = nil)
-      system("cd ~/dogids-backend/themes/dogids && npm run dev")
+      system("cd ~/dogids-backend && yarn run dev")
     end
 
     # no_commands do
