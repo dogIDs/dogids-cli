@@ -7,9 +7,14 @@ module Dogids
       def deploy_web
         print_heading("Deploying dogids.com")
 
-        server_addresses = [
-          "web"
-        ]
+        # Get each production server matching "web" for deploy
+        server_addresses = []
+        production_servers = get_config_url("production")
+        production_servers.map |key, ip_address|
+          if key.include? "web"
+            server_addresses << key
+          end
+        end
 
         server_addresses.each do |server_address|
           ssh_address = get_config_url("production","#{server_address}")
