@@ -10,7 +10,7 @@ module Dogids
         # Get each production server matching "web" for deploy
         server_addresses = []
         production_servers = get_config_url("production")
-        production_servers.map |key, ip_address|
+        production_servers.map do |key, ip_address|
           if key.include? "web"
             server_addresses << key
           end
