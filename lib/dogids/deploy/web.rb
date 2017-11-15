@@ -38,13 +38,13 @@ module Dogids
               ssh.exec!(web_update_permissions_command) do |_channel, _stream, data|
                 print_command(data)
               end
-              
+
               git_sha = "Unknown"
               ssh.exec!(web_git_get_sha) do |_channel, _stream, data|
                 git_sha = data.strip
               end
               print_command("Current git SHA: #{git_sha}")
-              
+
               print_command("Sending release to sentry")
               ssh.exec!(web_sentry_create_release(git_sha)) do |_channel, _stream, data|
                 print_command(data)
@@ -89,7 +89,7 @@ module Dogids
       commands << "git pull origin master"
       commands.join("&& ")
     end
-    
+
     def web_git_get_sha
       commands =  []
       commands << "cd /home/dogids/apps/dogids.com"
@@ -127,7 +127,7 @@ module Dogids
 
       commands.join("&& ")
     end
-    
+
     ### SENTRY COMMANDS ###
     def web_sentry_create_release(git_sha)
       commands = []
@@ -135,21 +135,21 @@ module Dogids
       commands << "sentry-cli releases new #{git_sha}"
       commands.join(" && ")
     end
-    
+
     def web_sentry_set_commits(git_sha)
       commands = []
       commands << "cd /home/dogids/apps/dogids.com"
       commands << "sentry-cli releases set-commits #{git_sha} --auto"
       commands.join(" && ")
     end
-    
+
     def web_sentry_finalize(git_sha)
       commands = []
       commands << "cd /home/dogids/apps/dogids.com"
       commands << "sentry-cli releases finalize #{git_sha}"
       commands.join(" && ")
     end
-    
+
     def web_sentry_deploy(git_sha)
       commands = []
       commands << "cd /home/dogids/apps/dogids.com"
